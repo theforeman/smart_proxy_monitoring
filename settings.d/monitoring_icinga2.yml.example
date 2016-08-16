@@ -1,0 +1,17 @@
+---
+# Collect Monitoring information via Icinga 2 API
+:enabled: true
+
+# The FQDN or IP address of the Icinga 2 server (if using IP address also set verify_ssl to false)
+:server: icinga2.localdomain
+# The CA certificate used by Icinga 2 (typically located on the server at /etc/icinga2/pki/ca.crt)
+:api_cacert: /usr/share/foreman-proxy/monitoring/ca.crt
+# The name of API User
+:api_user: foreman
+# The certificate issued on the client_cn attribute of the API User and the corresponding key
+:api_usercert: /usr/share/foreman-proxy/monitoring/foreman.crt
+:api_userkey: /usr/share/foreman-proxy/monitoring/foreman.key
+# The password from the password attribute of the API User (if not using certificates)
+#:api_password: foreman
+# SSL Verfification mode (boolean value)
+:verify_ssl: true

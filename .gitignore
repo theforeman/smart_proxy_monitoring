@@ -1,0 +1,14 @@
+settings.d/*.yml
+tags
+.idea/
+/logs
+.idea
+*swp
+Gemfile.lock
+.rbenv*
+.rvmrc*
+.ruby-*
+.bundle
+pkg/
+test/tmp/*
+/tmp/

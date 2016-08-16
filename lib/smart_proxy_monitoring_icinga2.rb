@@ -1,0 +1,2 @@
+require 'smart_proxy_monitoring_icinga2/plugin_configuration'
+require 'smart_proxy_monitoring_icinga2/monitoring_icinga2_plugin'

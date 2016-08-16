@@ -1,0 +1,11 @@
+---
+# Collect Monitoring information
+:enabled: true
+
+# Valid providers:
+#   monitoring_icinga2 (Icinga 2 API, default)
+#:use_provider: monitoring_icinga2
+
+# Strip this part of the domain when communicating with the Monitoring server
+# and add it when communicating with Foreman
+# :strip_domain: .localdomain
