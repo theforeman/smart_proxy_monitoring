@@ -138,10 +138,10 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 ---
 :enabled: true
 :server: icinga2.localdomain
-:api_cacert: /usr/share/foreman-proxy/monitoring/ca.crt
+:api_cacert: /etc/foreman-proxy/monitoring/ca.crt
 :api_user: foreman
-:api_usercert: /usr/share/foreman-proxy/monitoring/foreman.crt
-:api_userkey: /usr/share/foreman-proxy/monitoring/foreman.key
+:api_usercert: /etc/foreman-proxy/monitoring/foreman.crt
+:api_userkey: /etc/foreman-proxy/monitoring/foreman.key
 #:api_password: foreman
 :verify_ssl: true
 ```
