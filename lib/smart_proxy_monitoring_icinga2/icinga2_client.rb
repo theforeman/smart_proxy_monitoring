@@ -79,8 +79,8 @@ module ::Proxy::Monitoring::Icinga2
         client(url).post(data)
       end
 
-      def put(url)
-        client(url).put
+      def put(url, data)
+        client(url).put(data)
       end
 
       def delete(url)

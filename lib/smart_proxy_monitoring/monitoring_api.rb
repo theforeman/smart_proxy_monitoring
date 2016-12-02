@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'smart_proxy_monitoring/monitoring_plugin'
+require 'json'
 
 module Proxy::Monitoring
   class Api < ::Sinatra::Base
@@ -10,6 +11,22 @@ module Proxy::Monitoring
     helpers ::Proxy::Helpers
     authorize_with_trusted_hosts
     authorize_with_ssl_client
+
+    post '/host/:host' do |host|
+      begin
+        validate_dns_name!(host)
+        host = strip_domain(host)
+        attributes = JSON.parse(params[:attributes])
+
+        server.create_host(host, attributes)
+      rescue Proxy::Monitoring::NotFound => e
+        log_halt 404, e
+      rescue Proxy::Monitoring::ConnectionError => e
+        log_halt 503, e
+      rescue Exception => e
+        log_halt 400, e
+      end
+    end
 
     delete '/host/:host' do |host|
       begin

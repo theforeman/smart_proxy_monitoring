@@ -3,6 +3,25 @@ module Proxy::Monitoring::Icinga2
     include Proxy::Log
     include Proxy::Util
 
+    ICINGA_HOST_ATTR = %q(display_name address address6 templates)
+
+    def create_host(host,attributes)
+      request_url = "/objects/hosts/#{host}"
+      data = {}
+
+      data['templates'] = [ 'foreman-host' ] unless attributes.has_key?('templates')
+
+      attributes.each do |key, value|
+        key = "vars.#{key}" unless ICINGA_HOST_ATTR.include?(key)
+        data[key] = value
+      end
+
+      result = with_errorhandling("Create #{host}") do
+        Icinga2Client.put(request_url, data.to_json)
+      end
+      result.to_json
+    end
+
     def remove_host(host)
       request_url = "/objects/hosts/#{host}?cascade=1"
 
