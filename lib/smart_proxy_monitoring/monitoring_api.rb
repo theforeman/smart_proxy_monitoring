@@ -16,7 +16,7 @@ module Proxy::Monitoring
       begin
         validate_dns_name!(host)
         host = strip_domain(host)
-        attributes = JSON.parse(params[:attributes])
+        attributes = params[:attributes]
 
         server.create_host(host, attributes)
       rescue Proxy::Monitoring::NotFound => e
@@ -32,7 +32,7 @@ module Proxy::Monitoring
       begin
         validate_dns_name!(host)
         host = strip_domain(host)
-        attributes = JSON.parse(params[:attributes])
+        attributes = params[:attributes]
 
         server.update_host(host, attributes)
       rescue Proxy::Monitoring::NotFound => e

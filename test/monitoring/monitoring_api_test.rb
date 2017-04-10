@@ -14,6 +14,10 @@ class MonitoringApiTest < Test::Unit::TestCase
     def remove_downtime_host(host, author, comment); end
 
     def remove_host(host); end
+
+    def create_host(host, attributes); end
+
+    def update_host(host, attributes); end
   end
 
   def app
@@ -99,5 +103,17 @@ class MonitoringApiTest < Test::Unit::TestCase
     delete '/host/my.example.com'
 
     assert_equal 503, last_response.status
+  end
+
+  def test_create_host
+    body = {:attributes => {:ip => '1.1.1.1'}}.to_json
+    put '/host/my.example.com', body, "CONTENT_TYPE" => "application/json"
+    assert last_response.ok?, "Last response was not ok: #{last_response.status} #{last_response.body}"
+  end
+
+  def test_update_host
+    body = {:attributes => {:ip => '1.1.1.1'}}.to_json
+    post '/host/my.example.com', body, "CONTENT_TYPE" => "application/json"
+    assert last_response.ok?, "Last response was not ok: #{last_response.status} #{last_response.body}"
   end
 end

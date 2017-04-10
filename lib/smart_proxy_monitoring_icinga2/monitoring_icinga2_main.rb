@@ -1,11 +1,18 @@
+require 'smart_proxy_monitoring_icinga2/icinga2_client'
+
 module Proxy::Monitoring::Icinga2
   class Provider < ::Proxy::Monitoring::Provider
     include Proxy::Log
     include Proxy::Util
 
-    ICINGA_HOST_ATTRS = %q(display_name address address6 templates)
+    ICINGA_HOST_ATTRS = %w(display_name address address6 templates)
 
-    def create_host(host,attributes)
+    ICINGA_ATTR_MAPPING = {
+      'ip' => 'address',
+      'ip6' => 'address6',
+    }.freeze
+
+    def create_host(host, attributes)
       request_url = "/objects/hosts/#{host}"
 
       result = with_errorhandling("Create #{host}") do
@@ -14,26 +21,13 @@ module Proxy::Monitoring::Icinga2
       result.to_json
     end
 
-    def update_host(host,attributes)
+    def update_host(host, attributes)
       request_url = "/objects/hosts/#{host}"
 
       result = with_errorhandling("Create #{host}") do
         Icinga2Client.post(request_url, host_data(attributes).to_json)
       end
       result.to_json
-    end
-
-    def host_data(attributes)
-      data = {}
-
-      data['templates'] = [ 'foreman-host' ] unless attributes.has_key?('templates')
-
-      attributes.each do |key, value|
-        key = "vars.#{key}" unless ICINGA_HOST_ATTRS.include?(key)
-        data[key] = value
-      end
-
-      data
     end
 
     def remove_host(host)
@@ -72,6 +66,20 @@ module Proxy::Monitoring::Icinga2
     end
 
     private
+
+    def host_data(attributes)
+      data = {}
+
+      data['templates'] = [ 'foreman-host' ] unless attributes.has_key?('templates')
+
+      attributes.each do |key, value|
+        key = ICINGA_ATTR_MAPPING[key] if ICINGA_ATTR_MAPPING.key?(key)
+        key = "vars.#{key}" unless ICINGA_HOST_ATTRS.include?(key)
+        data[key] = value
+      end
+
+      data
+    end
 
     def with_errorhandling(action)
       response = yield
