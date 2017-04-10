@@ -10,5 +10,6 @@ class MonitoringIcinga2ProviderInterfaceTest < Test::Unit::TestCase
     assert monitoring_server.respond_to?(:create_host)
     assert monitoring_server.respond_to?(:update_host)
     assert monitoring_server.respond_to?(:remove_host)
+    assert monitoring_server.respond_to?(:query_host)
   end
 end

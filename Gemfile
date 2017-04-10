@@ -10,4 +10,5 @@ group :test do
   gem 'rack-test'
   gem 'single_test'
   gem 'webmock'
+  gem 'sinatra', '>= 1.4.4'
 end

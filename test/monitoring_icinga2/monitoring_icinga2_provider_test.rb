@@ -7,6 +7,60 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     @provider = Proxy::Monitoring::Icinga2::Provider.new
   end
 
+  def test_query_host
+    icinga_result = '{"results":[{"attrs":{"address":"1.1.1.1","address6":"2001:db8::1","templates":["xyz.example.com","foreman-host"],"vars":null},"joins":{},"meta":{},"name":"xyz.example.com","type":"Host"}]}'
+    stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
+      to_return(:status => 200, :body => icinga_result)
+
+    attributes = {
+      'ip' => '1.1.1.1',
+      'ip6' => '2001:db8::1',
+    }
+    data = @provider.query_host('xyz.example.com')
+
+    assert_equal attributes, data
+  end
+
+  def test_query_host_non_existent
+    icinga_result = '{"error":404.0,"status":"No objects found."}'
+    stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
+      to_return(:status => 200, :body => icinga_result)
+
+    assert_raises Proxy::Monitoring::NotFound do
+      @provider.query_host('xyz.example.com')
+    end
+  end
+
+  def test_query_host_with_vars
+    icinga_result = '{"results":[{"attrs":{"address":"1.1.1.1","address6":"2001:db8::1","templates":["xyz.example.com","foreman-host"],"vars":{"os":"Linux","disks":["/","/boot"]}},"joins":{},"meta":{},"name":"xyz.example.com","type":"Host"}]}'
+    stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
+      to_return(:status => 200, :body => icinga_result)
+
+    attributes = {
+      'ip' => '1.1.1.1',
+      'ip6' => '2001:db8::1',
+      'os' => 'Linux',
+      'disks' => [ '/', '/boot' ] 
+    }
+    data = @provider.query_host('xyz.example.com')
+
+    assert_equal attributes, data
+  end
+
+  def test_query_host_with_template
+    icinga_result = '{"results":[{"attrs":{"address":"1.1.1.1","address6":"2001:db8::1","templates":["xyz.example.com","Foreman Host"],"vars":null},"joins":{},"meta":{},"name":"xyz.example.com","type":"Host"}]}'
+    stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
+      to_return(:status => 200, :body => icinga_result)
+
+    attributes = {
+      'ip' => '1.1.1.1',
+      'ip6' => '2001:db8::1',
+      'templates' => [ 'Foreman Host' ],
+    }
+    data = @provider.query_host('xyz.example.com')
+
+    assert_equal attributes, data
+  end
   def test_create_host
     icinga_result = '{"results":[{"code":200.0,"status":"Object was created"}]}'
     stub_request(:put, "https://localhost:5665/v1/objects/hosts/xyz.example.com").

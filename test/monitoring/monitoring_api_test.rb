@@ -13,6 +13,8 @@ class MonitoringApiTest < Test::Unit::TestCase
 
     def remove_downtime_host(host, author, comment); end
 
+    def query_host(host); end
+
     def remove_host(host); end
 
     def create_host(host, attributes); end
@@ -116,4 +118,17 @@ class MonitoringApiTest < Test::Unit::TestCase
     post '/host/my.example.com', body, "CONTENT_TYPE" => "application/json"
     assert last_response.ok?, "Last response was not ok: #{last_response.status} #{last_response.body}"
   end
+
+  def test_query_host
+    get '/host/my.example.com'
+    assert last_response.ok?, "Last response was not ok: #{last_response.status} #{last_response.body}"
+  end
+
+  def test_query_host_non_existant_host
+    @server.expects(:query_host).raises(Proxy::Monitoring::NotFound)
+    get '/host/abc.example.com'
+
+    assert_equal 404, last_response.status
+  end
+
 end
