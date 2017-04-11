@@ -150,9 +150,6 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 
 # TODO
 
-Monitoring:
-* Add host creation and update
-
 Provider Icinga2:
 * Add endpoint and zone management for Icinga 2 as agent
 
