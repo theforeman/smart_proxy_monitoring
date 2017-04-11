@@ -1,0 +1,14 @@
+---
+# Manage hosts via icingaweb2-module-director provider
+:enabled: true
+
+# The URL of icinga director
+:director_url: http://www.example.com/icingaweb2/director
+# The CA certificate used by Icinga Director (see httpd conf)
+:director_cacert: /etc/foreman-proxy/monitoring/ca.crt
+# The name of API User
+:director_user: foreman
+# The password from the password attribute of the API User (if not using certificates)
+:director_password: foreman
+# SSL Verfification mode (boolean value)
+:verify_ssl: true

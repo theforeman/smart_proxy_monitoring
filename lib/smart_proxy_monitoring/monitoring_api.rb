@@ -32,6 +32,7 @@ module Proxy::Monitoring
         validate_dns_name!(host)
         host = strip_domain(host)
         attributes = params[:attributes]
+        logger.debug "Creating host #{host} object with attributes #{attributes.inspect}"
 
         server.create_host(host, attributes)
       rescue Proxy::Monitoring::NotFound => e
@@ -48,6 +49,7 @@ module Proxy::Monitoring
         validate_dns_name!(host)
         host = strip_domain(host)
         attributes = params[:attributes]
+        logger.debug "Updating host #{host} object with attributes #{attributes.inspect}"
 
         server.update_host(host, attributes)
       rescue Proxy::Monitoring::NotFound => e
@@ -63,6 +65,7 @@ module Proxy::Monitoring
       begin
         validate_dns_name!(host)
         host = strip_domain(host)
+        logger.debug "Removing host #{host} object"
 
         server.remove_host(host)
       rescue Proxy::Monitoring::NotFound => e

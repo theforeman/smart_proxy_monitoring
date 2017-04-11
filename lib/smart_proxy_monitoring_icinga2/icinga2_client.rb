@@ -33,7 +33,7 @@ module ::Proxy::Monitoring::Icinga2
         options.merge!(auth_options)
 
         RestClient::Resource.new(
-          URI.encode([baseurl, request_url].join('')),
+          [baseurl, request_url].join(''),
           options
         )
       end

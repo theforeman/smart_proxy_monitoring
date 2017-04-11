@@ -40,7 +40,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
       'ip' => '1.1.1.1',
       'ip6' => '2001:db8::1',
       'os' => 'Linux',
-      'disks' => [ '/', '/boot' ] 
+      'disks' => [ '/', '/boot' ]
     }
     data = @provider.query_host('xyz.example.com')
 
@@ -65,7 +65,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     icinga_result = '{"results":[{"code":200.0,"status":"Object was created"}]}'
     stub_request(:put, "https://localhost:5665/v1/objects/hosts/xyz.example.com").
       with(
-        :body => "{\"templates\":[\"foreman-host\"],\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}"
+        :body => "{\"templates\":[\"foreman-host\"],\"attrs\":{\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}}"
     ).
     to_return(:status => 200, :body => icinga_result)
 
@@ -80,7 +80,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     icinga_result = '{"results":[{"code":200.0,"name":"xyz.example.com","status":"Attributes updated.","type":"Host"}]}'
     stub_request(:post, "https://localhost:5665/v1/objects/hosts/xyz.example.com").
       with(
-        :body => "{\"templates\":[\"foreman-host\"],\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}"
+        :body => "{\"templates\":[\"foreman-host\"],\"attrs\":{\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}}"
     ).
     to_return(:status => 200, :body => icinga_result)
 

@@ -39,7 +39,7 @@ module Proxy::Monitoring::Icinga2
       result.to_json
     end
 
-    def remove_host(host)
+  def remove_host(host)
       request_url = "/objects/hosts/#{host}?cascade=1"
 
       result = with_errorhandling("Remove #{host}") do
@@ -83,12 +83,12 @@ module Proxy::Monitoring::Icinga2
       data.delete('templates') if data['templates'] == [ 'foreman-host' ]
       if data['vars'].nil?
         data.delete('vars')
-      else 
+      else
         data = data.merge(data.delete('vars'))
       end
 
-      data.each do |key,value|
-	key = ICINGA_ATTR_MAPPING.invert[key] if ICINGA_ATTR_MAPPING.invert.key?(key)
+      data.each do |key, value|
+        key = ICINGA_ATTR_MAPPING.invert[key] if ICINGA_ATTR_MAPPING.invert.key?(key)
         attributes[key] = value
       end
 
@@ -99,11 +99,12 @@ module Proxy::Monitoring::Icinga2
       data = {}
 
       data['templates'] = [ 'foreman-host' ] unless attributes.has_key?('templates')
+      data['attrs'] = {}
 
       attributes.each do |key, value|
         key = ICINGA_ATTR_MAPPING[key] if ICINGA_ATTR_MAPPING.key?(key)
         key = "vars.#{key}" unless ICINGA_HOST_ATTRS.include?(key)
-        data[key] = value
+        data['attrs'][key] = value
       end
 
       data
@@ -129,6 +130,8 @@ module Proxy::Monitoring::Icinga2
       result
     rescue JSON::ParserError => e
       raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned invalid JSON: '#{e.message}'")
+    rescue RestClient::NotFound => e
+      raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned: #{e.message}.")
     rescue RestClient::Exception => e
       raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: '#{e.response}'")
     rescue Errno::ECONNREFUSED => e
