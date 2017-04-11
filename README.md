@@ -139,6 +139,7 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 :enabled: true
 :server: icinga2.localdomain
 :api_cacert: /etc/foreman-proxy/monitoring/ca.crt
+#:api_port: 5665
 :api_user: foreman
 :api_usercert: /etc/foreman-proxy/monitoring/foreman.crt
 :api_userkey: /etc/foreman-proxy/monitoring/foreman.key
@@ -154,6 +155,10 @@ Monitoring:
 
 Provider Icinga2:
 * Add endpoint and zone management for Icinga 2 as agent
+
+Additional Providers:
+* Zabbix
+* OpenNMS
 
 # Copyright
 

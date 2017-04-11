@@ -6,6 +6,8 @@
 :server: icinga2.localdomain
 # The CA certificate used by Icinga 2 (typically located on the server at /etc/icinga2/pki/ca.crt)
 :api_cacert: /etc/foreman-proxy/monitoring/ca.crt
+# The port of Icinga 2 API (default is 5665)
+#:api_port: 5665
 # The name of API User
 :api_user: foreman
 # The certificate issued on the client_cn attribute of the API User and the corresponding key
