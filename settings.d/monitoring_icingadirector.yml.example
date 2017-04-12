@@ -3,7 +3,7 @@
 :enabled: true
 
 # The URL of icinga director
-:director_url: http://www.example.com/icingaweb2/director
+:director_url: https://www.example.com/icingaweb2/director
 # The CA certificate used by Icinga Director (see httpd conf)
 :director_cacert: /etc/foreman-proxy/monitoring/ca.crt
 # The name of API User

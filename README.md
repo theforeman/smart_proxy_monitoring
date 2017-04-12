@@ -18,7 +18,8 @@ This plug-in has not been packaged for Debian, yet.
 # Configuration
 
 The plug-in requires some configuration on the Monitoring server and the Smart Proxy.
-For now the only supported Monitoring solution is Icinga 2.
+For now the only supported Monitoring solution is Icinga 2 and the combination of Icinga 2
+and the Icinga Web 2 Module Director.
 
 ## Icinga 2
 
@@ -114,6 +115,25 @@ object ApiUser "foreman" {
 # icinga2 pki sign-csr --csr /etc/icinga2/pki/foreman.csr --cert /etc/icinga2/pki/foreman.crt
 ```
 
+In addition to the authentication a Host template is required. By default it uses "foreman-host" if none
+is provided from the Foreman WebUI. This template should define defaults for the host check and intervals.
+
+```
+# vi /etc/icinga2/conf.d/templates.conf
+template Host "foreman-host" {
+    check_command = "hostalive"
+    max_check_attempts = "3"
+    check_interval = 5m
+    retry_interval = 1m
+    enable_notifications = true
+    enable_active_checks = true
+    enable_passive_checks = true
+    enable_event_handler = true
+    enable_perfdata = true
+    volatile = false
+}
+```
+
 ### Smart Proxy
 
 Ensure that the Monitoring module is enabled and uses the provider monitoring_icinga2.
@@ -147,6 +167,77 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 :verify_ssl: true
 ```
 
+## Icinga 2 and Icinga Web 2 Module Director
+
+This requires you to do the configuration steps above so
+Downtimes could be send to and Status information could be
+read from Icinga 2.
+
+In addition you have to configure the provider Icingadirector
+for managing hosts in the Icinga Web 2 Module Director.
+
+### Icinga Web 2 Module Director
+
+Using the API of the Icinga Web 2 Module Director requires
+Authentication and Authorisation like it is described in its
+[documentation](https://github.com/Icinga/icingaweb2-module-director/blob/master/doc/70-REST-API.md).
+
+For the basic authentication of the webserver there are two
+possible ways of configuration. If you already use basic auth
+simply add a user and password to the authentication source.
+If you do not want to add basic authentication you can configure
+the webserver to auto login as a user depending on your source ip.
+```
+# vi /etc/httpd/conf.d/icingaweb2.conf
+...
+RewriteBase /icingaweb2/
+RewriteCond %{REMOTE_ADDR} ^192\.168\.142\.3
+RewriteRule ^(.*)$ - [E=REMOTE_USER:foreman]
+...
+```
+
+In Icinga Web 2 you also have to add an authentication backend
+"external".
+```
+# vi /etc/icingaweb2/authentication.ini
+[External]
+backend = "external"
+```
+
+Furthermore a role is required assigning permissions to your user.
+```
+# vi /etc/icingaweb2/roles.ini 
+[Foreman]
+users = "foreman"
+permissions = "module/director, director/api, director/*"
+```
+
+### Smart Proxy
+
+Ensure that the Monitoring module is enabled and uses the provider monitoring_icinga2
+and monitoring_icingadirector.
+```
+# vi /etc/foreman-proxy/settings.d/monitoring.yaml
+---
+:enabled: true
+:use_provider: 
+ - monitoring_icinga2
+ - monitoring_icingadirector
+```
+
+Configure the provider with the location of your director installation and
+the User information if required. Using SSL with verification is recommended
+but not required.
+```
+---
+:enabled: true
+
+:director_url: https://www.example.com/icingaweb2/director
+:director_cacert: /etc/foreman-proxy/monitoring/ca.crt
+:director_user: foreman
+:director_password: foreman
+:verify_ssl: true
+```
 
 # TODO
 
