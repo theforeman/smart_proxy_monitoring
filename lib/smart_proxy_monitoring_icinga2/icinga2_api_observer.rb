@@ -6,6 +6,7 @@ module ::Proxy::Monitoring::Icinga2
   class Icinga2ApiObserver
     include ::Proxy::Log
     include ::Proxy::Monitoring::Icinga2::Common
+    include TasksCommon
 
     attr_reader :semaphore
 
@@ -53,7 +54,7 @@ module ::Proxy::Monitoring::Icinga2
       ssl_socket.sysclose unless ssl_socket.nil?
     end
 
-    def start
+    def do_start
       @thread = Thread.new { monitor }
       @thread.abort_on_exception = true
       @thread

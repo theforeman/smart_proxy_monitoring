@@ -5,6 +5,7 @@ require 'json'
 module ::Proxy::Monitoring::Icinga2
   class Icinga2InitialImporter
     include ::Proxy::Log
+    include TasksCommon
 
     def initialize(queue)
       @queue = queue.queue
@@ -81,7 +82,7 @@ module ::Proxy::Monitoring::Icinga2
       end
     end
 
-    def start
+    def do_start
       @thread = Thread.new { monitor }
       @thread.abort_on_exception = true
       @thread

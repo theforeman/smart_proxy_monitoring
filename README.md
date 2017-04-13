@@ -140,12 +140,15 @@ Ensure that the Monitoring module is enabled and uses the provider monitoring_ic
 It is the default provider so also no setting for use_provider is fine.
 If you configured hosts in Icinga2 only with hostname instead of FQDN, you can add `:strip_domain` with
 all the parts to strip, e.g. `.localdomain`.
+By default, SmartProxy will collect monitoring statuses from your monitoring solution and upload them to
+Foreman. This can be disabled by setting `collect_status` to `false`.
 
 ```
 # vi /etc/foreman-proxy/settings.d/monitoring.yaml
 ---
 :enabled: true
 :use_provider: monitoring_icinga2
+:collect_status: true
 ```
 
 Configure the provider with your server details and the API User information.

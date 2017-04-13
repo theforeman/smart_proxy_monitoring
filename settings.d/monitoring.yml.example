@@ -4,8 +4,14 @@
 
 # Valid providers:
 #   monitoring_icinga2 (Icinga 2 API, default)
-#:use_provider: monitoring_icinga2
+#   monitoring_icingadirector (icingaweb2-module-director, requires monitoring_icinga2 provider)
+#:use_provider:
+#  - monitoring_icinga2
+#  - monitoring_icingadirector
 
 # Strip this part of the domain when communicating with the Monitoring server
 # and add it when communicating with Foreman
 # :strip_domain: .localdomain
+
+# Collect monitoring status information and forward them to foreman
+:collect_status: true

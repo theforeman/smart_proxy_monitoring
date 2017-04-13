@@ -4,6 +4,7 @@ module ::Proxy::Monitoring::Icinga2
       require 'smart_proxy_monitoring_common/monitoring_common'
       require 'smart_proxy_monitoring_icinga2/monitoring_icinga2_main'
       require 'smart_proxy_monitoring_icinga2/monitoring_icinga2_common'
+      require 'smart_proxy_monitoring_icinga2/tasks_common'
       require 'smart_proxy_monitoring_icinga2/icinga2_upload_queue'
       require 'smart_proxy_monitoring_icinga2/icinga2_client'
       require 'smart_proxy_monitoring_icinga2/icinga2_initial_importer'
