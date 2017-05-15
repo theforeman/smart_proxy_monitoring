@@ -86,7 +86,7 @@ With the certificates created and placed in Icinga 2's pki directory you can ena
 ```
 
 To allow API connections you have to create an API User. You should name him according to the use case,
-so instructions will create an user named `foreman`. 
+so instructions will create an user named `foreman`.
 
 Password authentication is easier to setup, but certificate-based authentication is more secure.
 
@@ -144,7 +144,7 @@ By default, SmartProxy will collect monitoring statuses from your monitoring sol
 Foreman. This can be disabled by setting `collect_status` to `false`.
 
 ```
-# vi /etc/foreman-proxy/settings.d/monitoring.yaml
+# vi /etc/foreman-proxy/settings.d/monitoring.yml
 ---
 :enabled: true
 :use_provider: monitoring_icinga2
@@ -157,7 +157,7 @@ in /etc/icinga2/pki/) and provide the authentication details of the API User. If
 instead of the FQDN of the server, you will have to set verify_ssl to false.
 
 ```
-# vi /etc/foreman-proxy/settings.d/monitoring_icinga2.yaml
+# vi /etc/foreman-proxy/settings.d/monitoring_icinga2.yml
 ---
 :enabled: true
 :server: icinga2.localdomain
@@ -209,7 +209,7 @@ backend = "external"
 
 Furthermore a role is required assigning permissions to your user.
 ```
-# vi /etc/icingaweb2/roles.ini 
+# vi /etc/icingaweb2/roles.ini
 [Foreman]
 users = "foreman"
 permissions = "module/director, director/api, director/*"
@@ -220,10 +220,10 @@ permissions = "module/director, director/api, director/*"
 Ensure that the Monitoring module is enabled and uses the provider monitoring_icinga2
 and monitoring_icingadirector.
 ```
-# vi /etc/foreman-proxy/settings.d/monitoring.yaml
+# vi /etc/foreman-proxy/settings.d/monitoring.yml
 ---
 :enabled: true
-:use_provider: 
+:use_provider:
  - monitoring_icinga2
  - monitoring_icingadirector
 ```
