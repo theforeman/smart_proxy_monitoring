@@ -7,7 +7,7 @@ It requires also the Foreman Monitoring plug-in.
 
 Please see the Foreman manual for appropriate instructions:
 
-* [Foreman: How to Install a Plugin](http://theforeman.org/manuals/latest/index.html#6.Plugins)
+* [Foreman: How to Install a Proxy Plugin](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Smart-Proxy_Plugin)
 
 The gem name is `smart_proxy_monitoring`.
 
