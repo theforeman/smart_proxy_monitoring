@@ -49,7 +49,7 @@ module Proxy::Monitoring::Icinga2
     end
 
     def remove_downtime_host(host, author, comment)
-      request_url = "/actions/remove-downtime?type=Host&filter=host.name==\"#{host}\"\&\&author==\"#{author}\"\&\&comment=\"#{comment}\""
+      request_url = "/actions/remove-downtime?type=Host&filter=#{uri_encode_filter("host.name==\"#{host}\"\&\&author==\"#{author}\"\&\&comment=\"#{comment}\"")}"
       data = {}
 
       result = with_errorhandling("Remove downtime from #{host}") do
@@ -59,7 +59,7 @@ module Proxy::Monitoring::Icinga2
     end
 
     def set_downtime_host(host, author, comment, start_time, end_time)
-      request_url = "/actions/schedule-downtime?type=Host&filter=host.name==\"#{host}\""
+      request_url = "/actions/schedule-downtime?type=Host&filter=#{uri_encode_filter("host.name==\"#{host}\"")}"
       data = {
         'author' => author,
         'comment' => comment,
@@ -75,6 +75,10 @@ module Proxy::Monitoring::Icinga2
     end
 
     private
+
+    def uri_encode_filter(filter)
+      URI.encode(filter)
+    end
 
     def host_attributes(host, data)
       attributes = {}
