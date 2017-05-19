@@ -60,9 +60,12 @@ To create Icinga 2's own CA run:
 # icinga2 pki new-ca
 ```
 
-Afterwards copy the CA certificate to Icinga 2's pki directory:
+Afterwards copy the CA certificate to Icinga 2's pki directory (depending on installation
+source and platform you have to create the pki directory first with write permissions for the
+user Icinga 2 is running with, typically `icinga` or `nagios`):
 
 ```
+# install -o icinga -g icinga -m 0775 -d /etc/icinga2/pki
 # cp /var/lib/icinga2/ca/ca.crt /etc/icinga2/pki/
 ```
 
@@ -170,6 +173,12 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 :verify_ssl: true
 ```
 
+Afterwards restart the service.
+
+```
+# systemctl restart foreman-proxy.service
+```
+
 ## Icinga 2 and Icinga Web 2 Module Director
 
 This requires you to do the configuration steps above so
@@ -241,6 +250,25 @@ but not required.
 :director_password: foreman
 :verify_ssl: true
 ```
+
+Afterwards restart the service.
+
+```
+# systemctl restart foreman-proxy.service
+```
+
+# Troubleshooting
+
+The plug-in uses the configuration of the Smart Proxy to write its logs and does
+not provide a seperate log for now. So have a look into `/var/log/foreman-proxy/proxy.log`
+for default installations.
+
+Also look into the logs of the monitoring solution and when opening issues attach relevant entries
+for both logs. For Icinga 2 it is typically `/var/log/icinga2/icinga2.log` or if enabled
+`/var/log/icinga2/debug.log`. Icinga Web 2 Director uses Icinga Web 2's configuration
+which is typically logging to syslog with faciltiy `user` and application prefix `icingaweb2`
+which will result in logging entry in `/var/log/message` for osfamily Red Hat and `/var/log/syslog`
+for osfamily Debian.
 
 # TODO
 
