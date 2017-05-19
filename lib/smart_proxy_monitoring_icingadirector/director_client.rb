@@ -23,7 +23,7 @@ module ::Proxy::Monitoring::IcingaDirector
     def get(url)
       logger.debug "IcingaDirector: GET request to #{url}"
       client(url).get.body
-    rescue RestClient::NotFound
+    rescue RestClient::ResourceNotFound
       raise Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{url}.")
     end
 
@@ -40,7 +40,7 @@ module ::Proxy::Monitoring::IcingaDirector
     def delete(url)
       logger.debug "IcingaDirector: DELETE request to #{url}"
       client(url).delete.body
-    rescue RestClient::NotFound
+    rescue RestClient::ResourceNotFound
       raise Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{url}.")
     end
 
