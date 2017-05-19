@@ -134,7 +134,7 @@ module Proxy::Monitoring::Icinga2
       result
     rescue JSON::ParserError => e
       raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned invalid JSON: '#{e.message}'")
-    rescue RestClient::NotFound => e
+    rescue RestClient::ResourceNotFound => e
       raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned: #{e.message}.")
     rescue RestClient::Exception => e
       raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: '#{e.response}'")
