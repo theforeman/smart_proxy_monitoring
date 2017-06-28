@@ -186,7 +186,11 @@ Downtimes could be send to and Status information could be
 read from Icinga 2.
 
 In addition you have to configure the provider Icingadirector
-for managing hosts in the Icinga Web 2 Module Director.
+for managing hosts in the Icinga Web 2 Module Director. This
+graphical configuration frontend for Icinga 2 will allow you
+to customize the host, e.g.  adding additional required objects
+for using Icinga 2 as a monitoring agent or assign more attributes
+and services. By default it requires a template named `foreman-host`.
 
 ### Icinga Web 2 Module Director
 
