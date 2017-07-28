@@ -23,25 +23,29 @@ module ::Proxy::Monitoring::IcingaDirector
     def get(url)
       logger.debug "IcingaDirector: GET request to #{url}"
       client(url).get.body
-    rescue RestClient::ResourceNotFound
-      raise Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{url}.")
+    rescue StandardError => e
+      raise handle_http_exception(e, url)
     end
 
     def post(url, payload)
       logger.debug "IcingaDirector: POST request to #{url} with payload: #{payload}"
       client(url).post(payload).body
+    rescue StandardError => e
+      raise handle_http_exception(e, url)
     end
 
     def put(url, payload)
       logger.debug "IcingaDirector: PUT request to #{url} with payload: #{payload}"
       client(url).put(payload).body
+    rescue StandardError => e
+      raise handle_http_exception(e, url)
     end
 
     def delete(url)
       logger.debug "IcingaDirector: DELETE request to #{url}"
       client(url).delete.body
-    rescue RestClient::ResourceNotFound
-      raise Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{url}.")
+    rescue StandardError => e
+      raise handle_http_exception(e, url)
     end
 
     private
@@ -70,6 +74,17 @@ module ::Proxy::Monitoring::IcingaDirector
       {
         'Accept' => 'application/json'
       }
+    end
+
+    def handle_http_exception(e, url)
+      case e
+      when RestClient::ResourceNotFound
+        Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{request_url(url)}.")
+      when RestClient::Unauthorized
+        Proxy::Monitoring::AuthenticationError.new("Error authenicating to Icinga Director at #{request_url(url)}: #{e.message}")
+      else
+        Proxy::Monitoring::Error.new("Error connecting to Icinga Director at #{request_url(url)}: #{e.message}")
+      end
     end
 
     def baseurl

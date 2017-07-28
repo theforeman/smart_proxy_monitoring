@@ -13,67 +13,43 @@ module Proxy::Monitoring
     authorize_with_ssl_client
 
     get '/host/:host' do |host|
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
 
         server.query_host(host).to_json
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
     end
 
     put '/host/:host' do |host|
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
         attributes = params[:attributes]
         logger.debug "Creating host #{host} object with attributes #{attributes.inspect}"
 
         server.create_host(host, attributes)
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
     end
 
     post '/host/:host' do |host|
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
         attributes = params[:attributes]
         logger.debug "Updating host #{host} object with attributes #{attributes.inspect}"
 
         server.update_host(host, attributes)
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
     end
 
     delete '/host/:host' do |host|
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
         logger.debug "Removing host #{host} object"
 
         server.remove_host(host)
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
     end
 
@@ -83,17 +59,11 @@ module Proxy::Monitoring
       start_time = params[:start_time] || Time.now.to_i
       end_time = params[:end_time] || (Time.now.to_i + (24 * 3600))
 
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
 
         server.set_downtime_host(host, author, comment, start_time, end_time)
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
     end
 
@@ -101,18 +71,24 @@ module Proxy::Monitoring
       author = params[:author] || 'foreman'
       comment = params[:comment] || 'triggered by foreman'
 
-      begin
+      log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
 
         server.remove_downtime_host(host, author, comment)
-      rescue Proxy::Monitoring::NotFound => e
-        log_halt 404, e
-      rescue Proxy::Monitoring::ConnectionError => e
-        log_halt 503, e
-      rescue Exception => e
-        log_halt 400, e
       end
+    end
+
+    def log_provider_errors
+      yield
+    rescue Proxy::Monitoring::NotFound => e
+      log_halt 404, e
+    rescue Proxy::Monitoring::ConnectionError => e
+      log_halt 503, e
+    rescue Proxy::Monitoring::AuthenticationError => e
+      log_halt 500, e
+    rescue Exception => e
+      log_halt 400, e
     end
 
     def validate_dns_name!(name)

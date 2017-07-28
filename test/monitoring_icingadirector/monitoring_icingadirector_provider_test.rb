@@ -35,6 +35,16 @@ class MonitoringIcingaDirectorProviderTest < Test::Unit::TestCase
     end
   end
 
+  def test_query_host_unauthorized
+    response_body = 'Unauthorized'
+    stub_request(:get, "https://localhost/icingaweb2/director/host?name=xyz.example.com").
+    to_return(:status => 401, :body => response_body)
+
+    assert_raises Proxy::Monitoring::AuthenticationError do
+      @provider.query_host('xyz.example.com')
+    end
+  end
+
   def test_query_host_with_vars
     response_body = "{\"object_name\":\"xyz.example.com\",\"object_type\":\"object\",\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\",\"imports\":[\"foreman_host\"],\"vars\":{\"os\":\"Linux\",\"disks\":[\"\\/\", \"\\/boot\"]}}"
     stub_request(:get, "https://localhost/icingaweb2/director/host?name=xyz.example.com").
