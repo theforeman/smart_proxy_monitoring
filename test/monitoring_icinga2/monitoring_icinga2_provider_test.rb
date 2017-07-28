@@ -31,6 +31,16 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     end
   end
 
+  def test_query_host_unauthorized
+    icinga_result = '{"error":401.0,"status":"Unauthorized. Please check your user credentials."}'
+    stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
+      to_return(:status => 401, :body => icinga_result)
+
+    assert_raises Proxy::Monitoring::AuthenticationError do
+      @provider.query_host('xyz.example.com')
+    end
+  end
+
   def test_query_host_with_vars
     icinga_result = '{"results":[{"attrs":{"address":"1.1.1.1","address6":"2001:db8::1","templates":["xyz.example.com","foreman-host"],"vars":{"os":"Linux","disks":["/","/boot"]}},"joins":{},"meta":{},"name":"xyz.example.com","type":"Host"}]}'
     stub_request(:get, "https://localhost:5665/v1/objects/hosts/xyz.example.com?attrs=vars&attrs=address&attrs=address6&attrs=templates").
