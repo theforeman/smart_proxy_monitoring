@@ -13,7 +13,7 @@ The gem name is `smart_proxy_monitoring`.
 
 RPM users can install the `rubygem-smart_proxy_monitoring` packages.
 
-This plug-in has not been packaged for Debian, yet.
+Deb users can install the `ruby-smart-proxy-monitoring` packages.
 
 # Configuration
 
