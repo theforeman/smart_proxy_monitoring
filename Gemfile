@@ -7,8 +7,20 @@ group :development do
 end
 
 group :test do
-  gem 'rack-test'
   gem 'single_test'
   gem 'webmock'
-  gem 'sinatra', '>= 1.4.4'
+  if RUBY_VERSION < '2.1'
+    gem 'public_suffix', '< 3'
+  else
+    gem 'public_suffix'
+  end
+  if RUBY_VERSION < '2.2'
+    gem 'sinatra', '< 2'
+    gem 'rack', '>= 1.1', '< 2.0.0'
+    gem 'rack-test', '< 0.8'
+  else
+    gem 'sinatra'
+    gem 'rack', '>= 1.1'
+    gem 'rack-test'
+  end
 end
