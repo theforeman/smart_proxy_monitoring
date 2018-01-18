@@ -39,7 +39,7 @@ module ::Proxy::Monitoring::Icinga2
             transformed = { result: change[:check_result][:state] }
           when 'AcknowledgementSet'
             transformed = { acknowledged: true }
-          when 'AchnowledgementCleared'
+          when 'AcknowledgementCleared'
             transformed = { acknowledged: false }
           when 'DowntimeTriggered'
             transformed = { downtime: true }
