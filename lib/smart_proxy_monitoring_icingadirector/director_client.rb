@@ -82,6 +82,8 @@ module ::Proxy::Monitoring::IcingaDirector
         Proxy::Monitoring::NotFound.new("Icinga Director returned not found for #{request_url(url)}.")
       when RestClient::Unauthorized
         Proxy::Monitoring::AuthenticationError.new("Error authenicating to Icinga Director at #{request_url(url)}: #{e.message}")
+      when RestClient::NotModified
+        raise
       else
         Proxy::Monitoring::Error.new("Error connecting to Icinga Director at #{request_url(url)}: #{e.message}")
       end
