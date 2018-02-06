@@ -1,7 +1,7 @@
 # Smart Proxy - Monitoring
 
 This plug-in adds support for Monitoring to Foreman's Smart Proxy.
-It requires also the Foreman Monitoring plug-in.
+It also requires the Foreman Monitoring plug-in.
 
 # Installation
 
@@ -18,7 +18,7 @@ Deb users can install the `ruby-smart-proxy-monitoring` packages.
 # Configuration
 
 The plug-in requires some configuration on the Monitoring server and the Smart Proxy.
-For now the only supported Monitoring solution is Icinga 2 and the combination of Icinga 2
+For now, the only supported Monitoring solution is Icinga 2 and the combination of Icinga 2
 and the Icinga Web 2 Module Director.
 
 ## Icinga 2
@@ -31,7 +31,7 @@ The required steps for connecting the Smart Proxy and Icinga 2 will be found bel
 
 ### Monitoring Server
 
-On the Monitoring Server you have to enable the API and create API User.
+On the Monitoring Server, you have to enable the API and create API User.
 
 For testing the fastest way to setup this will be the following commands.
 
@@ -40,12 +40,12 @@ For testing the fastest way to setup this will be the following commands.
 # systemctl restart icinga2.service
 ```
 
-This will create the certficates, enable the API feature and create and API User `root` with
+This will create the certificates, enable the API feature and create and API User `root` with
 a random password. The configuration of the API User will be located in `/etc/icinga2/conf.d/api-users.conf`.
 
 More detailed instructions:
 
-To enable the API follow the next steps, if the API is already enabled skip this steps
+To enable the API, follow the next steps if the API is already enabled skip this steps
 and start by creating an API User. The API will already be enabled if you use the Icingaweb 2
 Module Director for configuration, Icinga 2 as Agents or in a distributed or high-available
 setup.
@@ -60,8 +60,8 @@ To create Icinga 2's own CA run:
 # icinga2 pki new-ca
 ```
 
-Afterwards copy the CA certificate to Icinga 2's pki directory (depending on installation
-source and platform you have to create the pki directory first with write permissions for the
+Afterwards copy the CA certificate to Icinga 2's PKI directory (depending on installation
+source and platform you have to create the PKI directory first with write permissions for the
 user Icinga 2 is running with, typically `icinga` or `nagios`):
 
 ```
@@ -81,7 +81,7 @@ And then sign the certficate request to get a certificate by executing:
 # icinga2 pki sign-csr --csr /etc/icinga2/pki/$(hostname -f).csr --cert /etc/icinga2/pki/$(hostname -f).crt
 ```
 
-With the certificates created and placed in Icinga 2's pki directory you can enable the API feature.
+With the certificates created and placed in Icinga 2's PKI directory, you can enable the API feature.
 
 ```
 # icinga2 feature enable api
@@ -89,7 +89,7 @@ With the certificates created and placed in Icinga 2's pki directory you can ena
 ```
 
 To allow API connections you have to create an API User. You should name him according to the use case,
-so instructions will create an user named `foreman`.
+so instructions will create a user named `foreman`.
 
 Password authentication is easier to setup, but certificate-based authentication is more secure.
 
@@ -118,8 +118,8 @@ object ApiUser "foreman" {
 # icinga2 pki sign-csr --csr /etc/icinga2/pki/foreman.csr --cert /etc/icinga2/pki/foreman.crt
 ```
 
-In addition to the authentication a Host template is required. By default it uses "foreman-host" if none
-is provided from the Foreman WebUI. This template should define defaults for the host check and intervals.
+In addition to the authentication, a Host template is required. By default, it uses "foreman-host" if none
+is provided at the Foreman WebUI. This template should define defaults for the host check and intervals.
 
 ```
 # vi /etc/icinga2/conf.d/templates.conf
@@ -141,7 +141,7 @@ template Host "foreman-host" {
 
 Ensure that the Monitoring module is enabled and uses the provider monitoring_icinga2.
 It is the default provider so also no setting for use_provider is fine.
-If you configured hosts in Icinga2 only with hostname instead of FQDN, you can add `:strip_domain` with
+If you configured hosts in Icinga2 only with the hostname instead of the FQDN, you can add `:strip_domain` with
 all the parts to strip, e.g. `.localdomain`.
 By default, SmartProxy will collect monitoring statuses from your monitoring solution and upload them to
 Foreman. This can be disabled by setting `collect_status` to `false`.
@@ -173,7 +173,7 @@ instead of the FQDN of the server, you will have to set verify_ssl to false.
 :verify_ssl: true
 ```
 
-Afterwards restart the service.
+Afterwards, restart the service.
 
 ```
 # systemctl restart foreman-proxy.service
@@ -182,27 +182,27 @@ Afterwards restart the service.
 ## Icinga 2 and Icinga Web 2 Module Director
 
 This requires you to do the configuration steps above so
-Downtimes could be send to and Status information could be
+Downtimes can be sent to Foreman and Status information can be
 read from Icinga 2.
 
-In addition you have to configure the provider Icingadirector
+In addition, you have to configure the provider Icingadirector
 for managing hosts in the Icinga Web 2 Module Director. This
 graphical configuration frontend for Icinga 2 will allow you
 to customize the host, e.g.  adding additional required objects
 for using Icinga 2 as a monitoring agent or assign more attributes
-and services. By default it requires a template named `foreman-host`.
+and services. By default, it requires a template named `foreman-host`.
 
 ### Icinga Web 2 Module Director
 
 Using the API of the Icinga Web 2 Module Director requires
-Authentication and Authorisation like it is described in its
+Authentication and Authorisation as it is described in the
 [documentation](https://github.com/Icinga/icingaweb2-module-director/blob/master/doc/70-REST-API.md).
 
-For the basic authentication of the webserver there are two
+For the basic authentication of the webserver, there are two
 possible ways of configuration. If you already use basic auth
 simply add a user and password to the authentication source.
 If you do not want to add basic authentication you can configure
-the webserver to auto login as a user depending on your source ip.
+the webserver to auto login as a user depending on your source IP.
 ```
 # vi /etc/httpd/conf.d/icingaweb2.conf
 ...
@@ -213,14 +213,14 @@ RewriteRule ^(.*)$ - [E=REMOTE_USER:foreman]
 ```
 
 In Icinga Web 2 you also have to add an authentication backend
-"external".
+`external`.
 ```
 # vi /etc/icingaweb2/authentication.ini
 [External]
 backend = "external"
 ```
 
-Furthermore a role is required assigning permissions to your user.
+Furthermore, a role is required assigning permissions to your user.
 ```
 # vi /etc/icingaweb2/roles.ini
 [Foreman]
@@ -230,8 +230,8 @@ permissions = "module/director, director/api, director/*"
 
 ### Smart Proxy
 
-Ensure that the Monitoring module is enabled and uses the provider monitoring_icinga2
-and monitoring_icingadirector.
+Ensure that the Monitoring module is enabled and uses the provider `monitoring_icinga2`
+and `monitoring_icingadirector`.
 ```
 # vi /etc/foreman-proxy/settings.d/monitoring.yml
 ---
@@ -255,7 +255,7 @@ but not required.
 :verify_ssl: true
 ```
 
-Afterwards restart the service.
+Afterwards, restart the service.
 
 ```
 # systemctl restart foreman-proxy.service
@@ -264,14 +264,14 @@ Afterwards restart the service.
 # Troubleshooting
 
 The plug-in uses the configuration of the Smart Proxy to write its logs and does
-not provide a seperate log for now. So have a look into `/var/log/foreman-proxy/proxy.log`
+not provide a separate log for now. So have a look into `/var/log/foreman-proxy/proxy.log`
 for default installations.
 
 Also look into the logs of the monitoring solution and when opening issues attach relevant entries
 for both logs. For Icinga 2 it is typically `/var/log/icinga2/icinga2.log` or if enabled
 `/var/log/icinga2/debug.log`. Icinga Web 2 Director uses Icinga Web 2's configuration
-which is typically logging to syslog with faciltiy `user` and application prefix `icingaweb2`
-which will result in logging entry in `/var/log/message` for osfamily Red Hat and `/var/log/syslog`
+which is typically logging to syslog with facility `user` and application prefix `icingaweb2`
+which will result in a logging entry in `/var/log/message` for osfamily Red Hat and `/var/log/syslog`
 for osfamily Debian.
 
 # TODO
