@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ['timo.goebel@dm.de', 'dirk.goetz@netways.de']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
   s.files = Dir['{lib,settings.d,bundler.d}/**/*'] + s.extra_rdoc_files
-  s.homepage = 'http://github.com/theforeman/smart_proxy_monitoring'
+  s.homepage = 'https://github.com/theforeman/smart_proxy_monitoring'
   s.license = 'GPL-3.0'
   s.add_dependency 'rest-client'
   s.add_dependency 'json'
