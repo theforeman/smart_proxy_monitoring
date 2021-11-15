@@ -58,11 +58,14 @@ module Proxy::Monitoring
       comment = params[:comment] || 'triggered by foreman'
       start_time = params[:start_time] || Time.now.to_i
       end_time = params[:end_time] || (Time.now.to_i + (24 * 3600))
+      all_services = params[:all_services]
 
       log_provider_errors do
         validate_dns_name!(host)
         host = strip_domain(host)
 
+        server.set_downtime_host(host, author, comment, start_time, end_time, all_services: all_services)
+      rescue ArgumentError
         server.set_downtime_host(host, author, comment, start_time, end_time)
       end
     end
