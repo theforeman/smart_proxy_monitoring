@@ -58,7 +58,7 @@ module Proxy::Monitoring::Icinga2
       result.to_json
     end
 
-    def set_downtime_host(host, author, comment, start_time, end_time)
+    def set_downtime_host(host, author, comment, start_time, end_time, all_services: nil, **)
       request_url = "/actions/schedule-downtime?type=Host&filter=#{uri_encode_filter("host.name==\"#{host}\"")}"
       data = {
         'author' => author,
@@ -67,6 +67,7 @@ module Proxy::Monitoring::Icinga2
         'end_time' => end_time,
         'duration' => 1000
       }
+      data['all_services'] = all_services unless all_services.nil?
 
       result = with_errorhandling("Set downtime on #{host}") do
         Icinga2Client.post(request_url, data.to_json)

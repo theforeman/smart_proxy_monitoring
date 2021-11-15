@@ -9,6 +9,7 @@ class MonitoringApiTest < Test::Unit::TestCase
   include Rack::Test::Methods
 
   class MonitoringApiTestProvider
+    # Also tests fallback for old #set_downtime_host without named arguments
     def set_downtime_host(host, author, comment, start_time, end_time); end
 
     def remove_downtime_host(host, author, comment); end
