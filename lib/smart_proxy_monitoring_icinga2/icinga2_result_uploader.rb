@@ -3,7 +3,7 @@ require 'thread'
 module ::Proxy::Monitoring::Icinga2
   class MonitoringResult < Proxy::HttpRequest::ForemanRequest
     def push_result(result)
-      send_request(request_factory.create_post('api/monitoring_results', result))
+      send_request(request_factory.create_post('api/v2/monitoring_results', result))
     end
   end
 
