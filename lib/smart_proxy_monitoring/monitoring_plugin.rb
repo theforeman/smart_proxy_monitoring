@@ -11,6 +11,8 @@ module Proxy::Monitoring
     uses_provider
     default_settings use_provider: 'monitoring_icinga2'
     default_settings collect_status: true
+    expose_setting :collect_status
+    expose_setting :strip_domain
 
     http_rackup_path File.expand_path('monitoring_http_config.ru', File.expand_path('../', __FILE__))
     https_rackup_path File.expand_path('monitoring_http_config.ru', File.expand_path('../', __FILE__))

@@ -5,6 +5,11 @@ module ::Proxy::Monitoring::Icinga2
     default_settings server: 'localhost'
     default_settings api_port: '5665'
     default_settings verify_ssl: true
+    expose_setting :server
+    expose_setting :api_user
+    capability("config")
+    capability("downtime")
+    capability("status") unless Proxy::Monitoring::Plugin.settings.collect_status
 
     requires :monitoring, ::Proxy::Monitoring::VERSION
 
