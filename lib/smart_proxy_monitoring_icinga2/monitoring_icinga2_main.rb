@@ -85,7 +85,7 @@ module Proxy::Monitoring::Icinga2
       attributes = {}
 
       data['templates'].delete(host)
-      data.delete('templates') if data['templates'] == [ 'foreman-host' ]
+      data.delete('templates') if data['templates'] == ['foreman-host']
       if data['vars'].nil?
         data.delete('vars')
       else
