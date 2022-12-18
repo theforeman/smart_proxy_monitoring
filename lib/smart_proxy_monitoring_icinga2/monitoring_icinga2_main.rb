@@ -141,9 +141,9 @@ module Proxy::Monitoring::Icinga2
       raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned: #{e.message}.")
     rescue RestClient::Exception => e
       raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: '#{e.response}'")
-    rescue Errno::ECONNREFUSED => e
+    rescue Errno::ECONNREFUSED
       raise Proxy::Monitoring::ConnectionError.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} is not responding")
-    rescue SocketError => e
+    rescue SocketError
       raise Proxy::Monitoring::ConnectionError.new("Icinga server '#{::Proxy::Monitoring::Icinga2::Plugin.settings.server}' is unknown")
     end
   end
