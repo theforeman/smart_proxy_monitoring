@@ -95,7 +95,7 @@ module Proxy::Monitoring
     end
 
     def validate_dns_name!(name)
-      raise Proxy::Monitoring::Error.new("Invalid DNS name #{name}") unless name =~ /^([a-zA-Z0-9]([-a-zA-Z0-9]+)?\.?)+$/
+      raise Proxy::Monitoring::Error, "Invalid DNS name #{name}" unless /^([a-zA-Z0-9]([-a-zA-Z0-9]+)?\.?)+$/.match?(name)
     end
 
     def strip_domain(name)
