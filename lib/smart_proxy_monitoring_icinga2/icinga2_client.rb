@@ -32,13 +32,13 @@ module ::Proxy::Monitoring::Icinga2
         options.merge!(auth_options)
 
         RestClient::Resource.new(
-          [baseurl, request_url].join(''),
+          [baseurl, request_url].join,
           options
         )
       end
 
       def events_socket(endpoint)
-        uri = URI.parse([baseurl, endpoint].join(''))
+        uri = URI.parse([baseurl, endpoint].join)
         socket = TCPSocket.new(uri.host, uri.port)
 
         ssl_context = OpenSSL::SSL::SSLContext.new
