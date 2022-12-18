@@ -39,7 +39,7 @@ module Proxy::Monitoring::Icinga2
       result.to_json
     end
 
-  def remove_host(host)
+    def remove_host(host)
       request_url = "/objects/hosts/#{host}?cascade=1"
 
       result = with_errorhandling("Remove #{host}") do
