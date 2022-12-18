@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'json'
   s.add_dependency 'rest-client'
 
-  s.required_ruby_version = '>= 2.5', '< 3'
+  s.required_ruby_version = '>= 2.5', '< 4'
 end
