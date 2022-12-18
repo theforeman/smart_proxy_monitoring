@@ -75,7 +75,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     icinga_result = '{"results":[{"code":200.0,"status":"Object was created"}]}'
     stub_request(:put, "https://localhost:5665/v1/objects/hosts/xyz.example.com").
       with(
-        :body => "{\"templates\":[\"foreman-host\"],\"attrs\":{\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}}"
+        :body => '{"templates":["foreman-host"],"attrs":{"address":"1.1.1.1","address6":"2001:db8::1"}}'
     ).
     to_return(:status => 200, :body => icinga_result)
 
@@ -90,7 +90,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
     icinga_result = '{"results":[{"code":200.0,"name":"xyz.example.com","status":"Attributes updated.","type":"Host"}]}'
     stub_request(:post, "https://localhost:5665/v1/objects/hosts/xyz.example.com").
       with(
-        :body => "{\"templates\":[\"foreman-host\"],\"attrs\":{\"address\":\"1.1.1.1\",\"address6\":\"2001:db8::1\"}}"
+        :body => '{"templates":["foreman-host"],"attrs":{"address":"1.1.1.1","address6":"2001:db8::1"}}'
     ).
     to_return(:status => 200, :body => icinga_result)
 
@@ -112,7 +112,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
   def test_set_downtime_host
     icinga_result = '{"results":[{"code":200.0,"legacy_id":2.0,"name":"xyz.example.com!xyz.example.com-1491819090-1","status":"Successfully scheduled downtime \'xyz.example.com!xyz.example.com-1491819090-1\' for object \'xyz.example.com\'."}]}'
     stub_request(:post, "https://localhost:5665/v1/actions/schedule-downtime?filter=host.name==%22xyz.example.com%22&type=Host").
-      with(:body => "{\"author\":\"Foreman\",\"comment\":\"Downtime by Foreman\",\"start_time\":\"1491819090\",\"end_time\":\"1491819095\",\"duration\":1000}").
+      with(:body => '{"author":"Foreman","comment":"Downtime by Foreman","start_time":"1491819090","end_time":"1491819095","duration":1000}').
       to_return(:status => 200, :body => icinga_result)
     @provider.set_downtime_host('xyz.example.com', 'Foreman', 'Downtime by Foreman', '1491819090', '1491819095')
   end
@@ -120,7 +120,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
   def test_set_downtime_host_all_services
     icinga_result = '{"results":[{"code":200.0,"legacy_id":2.0,"name":"xyz.example.com!xyz.example.com-1491819090-1","status":"Successfully scheduled downtime \'xyz.example.com!xyz.example.com-1491819090-1\' for object \'xyz.example.com\'."}]}'
     stub_request(:post, "https://localhost:5665/v1/actions/schedule-downtime?filter=host.name==%22xyz.example.com%22&type=Host").
-      with(:body => "{\"author\":\"Foreman\",\"comment\":\"Downtime by Foreman\",\"start_time\":\"1491819090\",\"end_time\":\"1491819095\",\"duration\":1000,\"all_services\":true}").
+      with(:body => '{"author":"Foreman","comment":"Downtime by Foreman","start_time":"1491819090","end_time":"1491819095","duration":1000,"all_services":true}').
       to_return(:status => 200, :body => icinga_result)
     @provider.set_downtime_host('xyz.example.com', 'Foreman', 'Downtime by Foreman', '1491819090', '1491819095', all_services: true)
   end
