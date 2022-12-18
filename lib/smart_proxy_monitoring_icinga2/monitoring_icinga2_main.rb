@@ -103,7 +103,7 @@ module Proxy::Monitoring::Icinga2
     def host_data(attributes)
       data = {}
 
-      data['templates'] = [ 'foreman-host' ] unless attributes.has_key?('templates')
+      data['templates'] = ['foreman-host'] unless attributes.key?('templates')
       data['attrs'] = {}
 
       attributes.each do |key, value|
