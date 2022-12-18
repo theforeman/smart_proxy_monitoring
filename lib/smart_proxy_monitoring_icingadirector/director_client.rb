@@ -60,6 +60,7 @@ module ::Proxy::Monitoring::IcingaDirector
 
     def auth_options
       return {} unless basic_auth?
+
       {
         user: user,
         password: password,

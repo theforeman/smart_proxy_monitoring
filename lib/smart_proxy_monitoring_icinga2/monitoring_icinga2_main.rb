@@ -122,6 +122,7 @@ module Proxy::Monitoring::Icinga2
       if result.key?('error') && result['status'] == "No objects found."
         raise Proxy::Monitoring::NotFound, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned no objects found."
       end
+
       unless result.key?('results')
         logger.error "Invalid Icinga result or result with errors: #{result.inspect}"
         raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an invalid result."
@@ -132,6 +133,7 @@ module Proxy::Monitoring::Icinga2
       if result['results'][0]['code'] && result['results'][0]['code'] != 200
         raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: #{result['results'][0]['code']} #{result['results'][0]['status']}"
       end
+
       result
     rescue JSON::ParserError => e
       raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned invalid JSON: '#{e.message}'"

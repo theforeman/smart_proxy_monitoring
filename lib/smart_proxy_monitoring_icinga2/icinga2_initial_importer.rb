@@ -35,6 +35,7 @@ module ::Proxy::Monitoring::Icinga2
       results = JSON.parse(results)
       results['results'].each do |result|
         next if result['attrs']['last_check_result'].nil?
+
         parsed = {
           host: result['attrs']['name'],
           result: result['attrs']['last_check_result']['state'],
@@ -52,6 +53,7 @@ module ::Proxy::Monitoring::Icinga2
       results = JSON.parse(results)
       results['results'].each do |result|
         next if result['attrs']['last_check_result'].nil?
+
         parsed = {
           host: result['attrs']['host_name'],
           service: result['attrs']['name'],
@@ -70,6 +72,7 @@ module ::Proxy::Monitoring::Icinga2
       results = JSON.parse(results)
       results['results'].each do |result|
         next unless result['attrs']['trigger_time'] != 0
+
         parsed = {
           host: result['attrs']['host_name'],
           service: result['attrs']['service_name'],

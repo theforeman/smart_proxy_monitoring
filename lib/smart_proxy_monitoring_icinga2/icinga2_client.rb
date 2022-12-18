@@ -89,12 +89,14 @@ module ::Proxy::Monitoring::Icinga2
       def cert
         file = Proxy::Monitoring::Icinga2::Plugin.settings.api_usercert
         return unless !file.nil? && File.file?(file)
+
         OpenSSL::X509::Certificate.new(File.read(file))
       end
 
       def key
         file = Proxy::Monitoring::Icinga2::Plugin.settings.api_userkey
         return unless !file.nil? && File.file?(file)
+
         OpenSSL::PKey::RSA.new(File.read(file))
       end
 
