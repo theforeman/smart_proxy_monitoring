@@ -1,5 +1,3 @@
-require 'thread'
-
 module ::Proxy::Monitoring::Icinga2
   class MonitoringResult < Proxy::HttpRequest::ForemanRequest
     def push_result(result)

@@ -1,7 +1,6 @@
 require 'json'
 require 'uri'
 require 'rest-client'
-require 'thread'
 require 'socket'
 require 'base64'
 
