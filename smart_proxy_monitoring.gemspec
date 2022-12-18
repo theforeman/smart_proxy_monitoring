@@ -12,12 +12,12 @@ Gem::Specification.new do |s|
   s.files = Dir['{lib,settings.d,bundler.d}/**/*'] + s.extra_rdoc_files
   s.homepage = 'https://github.com/theforeman/smart_proxy_monitoring'
   s.license = 'GPL-3.0'
-  s.add_dependency 'rest-client'
   s.add_dependency 'json'
+  s.add_dependency 'rest-client'
 
   s.required_ruby_version = '>= 2.5', '< 3'
 
-  s.add_development_dependency('rake')
   s.add_development_dependency('mocha')
+  s.add_development_dependency('rake')
   s.add_development_dependency('test-unit')
 end
