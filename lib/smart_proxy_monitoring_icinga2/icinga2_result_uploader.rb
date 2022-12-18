@@ -80,7 +80,7 @@ module ::Proxy::Monitoring::Icinga2
     private
 
     def symbolize_keys_deep!(h)
-      h.keys.each do |k|
+      h.each_key do |k|
         ks    = k.to_sym
         h[ks] = h.delete k
         symbolize_keys_deep! h[ks] if h[ks].is_a? Hash
