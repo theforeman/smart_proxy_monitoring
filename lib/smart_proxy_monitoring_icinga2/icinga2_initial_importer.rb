@@ -34,7 +34,7 @@ module ::Proxy::Monitoring::Icinga2
       results = Icinga2Client.get('/objects/hosts?attrs=name&attrs=last_check_result&attrs=acknowledgement')
       results = JSON.parse(results)
       results['results'].each do |result|
-        next if result['attrs']['last_check_result'] == nil
+        next if result['attrs']['last_check_result'].nil?
         parsed = {
           host: result['attrs']['name'],
           result: result['attrs']['last_check_result']['state'],
@@ -51,7 +51,7 @@ module ::Proxy::Monitoring::Icinga2
       results = Icinga2Client.get('/objects/services?attrs=name&attrs=last_check_result&attrs=acknowledgement&attrs=host_name')
       results = JSON.parse(results)
       results['results'].each do |result|
-        next if result['attrs']['last_check_result'] == nil
+        next if result['attrs']['last_check_result'].nil?
         parsed = {
           host: result['attrs']['host_name'],
           service: result['attrs']['name'],
