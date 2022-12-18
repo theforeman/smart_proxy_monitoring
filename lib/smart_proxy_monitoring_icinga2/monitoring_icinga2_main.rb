@@ -5,7 +5,7 @@ module Proxy::Monitoring::Icinga2
     include Proxy::Log
     include Proxy::Util
 
-    ICINGA_HOST_ATTRS = %w(display_name address address6 templates)
+    ICINGA_HOST_ATTRS = %w[display_name address address6 templates].freeze
 
     ICINGA_ATTR_MAPPING = {
       'ip' => 'address',
