@@ -6,10 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-Lint/UriEscapeUnescape:
-  Exclude:
-    - 'lib/smart_proxy_monitoring_icinga2/monitoring_icinga2_main.rb'
-
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
 Naming/MethodParameterName:
