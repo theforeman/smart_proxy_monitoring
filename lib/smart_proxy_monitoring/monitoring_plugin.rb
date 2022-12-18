@@ -14,8 +14,7 @@ module Proxy::Monitoring
     expose_setting :collect_status
     expose_setting :strip_domain
 
-    http_rackup_path File.expand_path('monitoring_http_config.ru', File.expand_path('../', __FILE__))
-    https_rackup_path File.expand_path('monitoring_http_config.ru', File.expand_path('../', __FILE__))
+    rackup_path File.expand_path('monitoring_http_config.ru', __dir__)
 
     load_classes ::Proxy::Monitoring::ConfigurationLoader
   end
