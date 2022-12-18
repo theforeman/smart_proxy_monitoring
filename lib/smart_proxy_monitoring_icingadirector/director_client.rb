@@ -90,7 +90,7 @@ module ::Proxy::Monitoring::IcingaDirector
     end
 
     def baseurl
-      Proxy::Monitoring::IcingaDirector::Plugin.settings.director_url + '/'
+      "#{Proxy::Monitoring::IcingaDirector::Plugin.settings.director_url}/"
     end
 
     def user
