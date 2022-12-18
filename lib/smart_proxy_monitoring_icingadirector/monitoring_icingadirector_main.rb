@@ -63,7 +63,7 @@ module Proxy::Monitoring::IcingaDirector
         'ip' => ip,
         'ip6' => ip6,
       }
-      result.merge!('templates' => templates) if templates != ['foreman_host']
+      result['templates'] = templates if templates != ['foreman_host']
       result.merge!(response['vars'] || {})
       result
     end
