@@ -9,24 +9,24 @@ module ::Proxy::Monitoring::Icinga2
     class << self
       def client(request_url)
         headers = {
-          'Accept' => 'application/json'
+          'Accept' => 'application/json',
         }
 
         options = {
           headers: headers,
           user: user,
           ssl_ca_file: cacert,
-          verify_ssl: ssl
+          verify_ssl: ssl,
         }
 
         auth_options = if certificate_request?
                          {
                            ssl_client_cert: cert,
-                           ssl_client_key: key
+                           ssl_client_key: key,
                          }
                        else
                          {
-                           password: password
+                           password: password,
                          }
                        end
         options.merge!(auth_options)

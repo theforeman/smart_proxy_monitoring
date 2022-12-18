@@ -50,7 +50,7 @@ module Proxy::Monitoring::IcingaDirector
         :address => attributes.delete('ip'),
         :address6 => attributes.delete('ip6'),
         :imports => attributes.delete('templates') || ['foreman_host'],
-        :vars => attributes
+        :vars => attributes,
       }
     end
 

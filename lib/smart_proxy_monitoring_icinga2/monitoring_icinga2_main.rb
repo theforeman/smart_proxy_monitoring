@@ -65,7 +65,7 @@ module Proxy::Monitoring::Icinga2
         'comment' => comment,
         'start_time' => start_time,
         'end_time' => end_time,
-        'duration' => 1000
+        'duration' => 1000,
       }
       data['all_services'] = all_services unless all_services.nil?
 

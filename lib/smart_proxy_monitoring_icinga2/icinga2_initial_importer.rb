@@ -42,7 +42,7 @@ module ::Proxy::Monitoring::Icinga2
           timestamp: result['attrs']['last_check_result']['schedule_end'],
           acknowledged: (result['attrs']['acknowledgement'] != 0),
           initial: true,
-          type: '_parsed'
+          type: '_parsed',
         }
         @queue.push(parsed)
       end
@@ -61,7 +61,7 @@ module ::Proxy::Monitoring::Icinga2
           timestamp: result['attrs']['last_check_result']['schedule_end'],
           acknowledged: (result['attrs']['acknowledgement'] != 0),
           initial: true,
-          type: '_parsed'
+          type: '_parsed',
         }
         @queue.push(parsed)
       end
@@ -78,7 +78,7 @@ module ::Proxy::Monitoring::Icinga2
           service: result['attrs']['service_name'],
           downtime: true,
           initial: true,
-          type: '_parsed'
+          type: '_parsed',
         }
         @queue.push(parsed)
       end

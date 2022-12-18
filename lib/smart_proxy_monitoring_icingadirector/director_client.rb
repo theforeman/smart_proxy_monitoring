@@ -54,7 +54,7 @@ module ::Proxy::Monitoring::IcingaDirector
       {
         headers: request_headers,
         ssl_ca_file: cacert,
-        verify_ssl: verify_ssl?
+        verify_ssl: verify_ssl?,
       }.merge(auth_options)
     end
 
@@ -73,7 +73,7 @@ module ::Proxy::Monitoring::IcingaDirector
 
     def request_headers
       {
-        'Accept' => 'application/json'
+        'Accept' => 'application/json',
       }
     end
 
