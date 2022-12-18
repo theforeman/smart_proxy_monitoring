@@ -26,16 +26,14 @@ module ::Proxy::Monitoring::Icinga2
           next unless line[0] == '{'
 
           with_event_counter('Icinga2 Event API Monitor') do
-            begin
-              parsed = JSON.parse(line)
-              if @queue.size > 100_000
-                @queue.clear
-                logger.error 'Queue was full. Flushing. Events were lost.'
-              end
-              @queue.push(parsed)
-            rescue JSON::ParserError => e
-              logger.error "Icinga2 Event API Monitor: Malformed JSON: #{e.message}"
+            parsed = JSON.parse(line)
+            if @queue.size > 100_000
+              @queue.clear
+              logger.error 'Queue was full. Flushing. Events were lost.'
             end
+            @queue.push(parsed)
+          rescue JSON::ParserError => e
+            logger.error "Icinga2 Event API Monitor: Malformed JSON: #{e.message}"
           end
 
         end
