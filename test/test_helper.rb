@@ -1,5 +1,4 @@
 require 'test/unit'
-require 'mocha/setup'
 require 'json'
 require 'ostruct'
 require 'webmock/test_unit'
