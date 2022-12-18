@@ -23,7 +23,7 @@ module ::Proxy::Monitoring::Icinga2
         logger.info 'Icinga event api monitoring started.'
 
         while line = ssl_socket.gets
-          next unless line.chars.first == '{'
+          next unless line[0] == '{'
 
           with_event_counter('Icinga2 Event API Monitor') do
             begin
