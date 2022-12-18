@@ -120,31 +120,31 @@ module Proxy::Monitoring::Icinga2
       logger.debug "Monitoring - Action successful: #{action}"
       result = JSON.parse(response.body)
       if result.key?('error') && result['status'] == "No objects found."
-        raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned no objects found.")
+        raise Proxy::Monitoring::NotFound, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned no objects found."
       end
       unless result.key?('results')
         logger.error "Invalid Icinga result or result with errors: #{result.inspect}"
-        raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an invalid result.")
+        raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an invalid result."
       end
       unless result['results'].first
-        raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an empty result.")
+        raise Proxy::Monitoring::NotFound, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an empty result."
       end
       if result['results'][0]['code'] && result['results'][0]['code'] != 200
-        raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: #{result['results'][0]['code']} #{result['results'][0]['status']}")
+        raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: #{result['results'][0]['code']} #{result['results'][0]['status']}"
       end
       result
     rescue JSON::ParserError => e
-      raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned invalid JSON: '#{e.message}'")
+      raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned invalid JSON: '#{e.message}'"
     rescue RestClient::Unauthorized => e
-      raise Proxy::Monitoring::AuthenticationError.new("Error authenicating to Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server}: #{e.message}.")
+      raise Proxy::Monitoring::AuthenticationError, "Error authenicating to Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server}: #{e.message}."
     rescue RestClient::ResourceNotFound => e
-      raise Proxy::Monitoring::NotFound.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned: #{e.message}.")
+      raise Proxy::Monitoring::NotFound, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned: #{e.message}."
     rescue RestClient::Exception => e
-      raise Proxy::Monitoring::Error.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: '#{e.response}'")
+      raise Proxy::Monitoring::Error, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} returned an error: '#{e.response}'"
     rescue Errno::ECONNREFUSED
-      raise Proxy::Monitoring::ConnectionError.new("Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} is not responding")
+      raise Proxy::Monitoring::ConnectionError, "Icinga server at #{::Proxy::Monitoring::Icinga2::Plugin.settings.server} is not responding"
     rescue SocketError
-      raise Proxy::Monitoring::ConnectionError.new("Icinga server '#{::Proxy::Monitoring::Icinga2::Plugin.settings.server}' is unknown")
+      raise Proxy::Monitoring::ConnectionError, "Icinga server '#{::Proxy::Monitoring::Icinga2::Plugin.settings.server}' is unknown"
     end
   end
 end
