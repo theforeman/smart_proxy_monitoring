@@ -58,7 +58,7 @@ module ::Proxy::Monitoring::Icinga2
           rescue Errno::ECONNREFUSED => e
             logger.error "Foreman refused connection when tried to upload monitoring result: #{e.message}"
             sleep 10
-          rescue => e
+          rescue StandardError => e
             logger.error "Error while uploading monitoring results to Foreman: #{e.message}"
             sleep 1
             retry
