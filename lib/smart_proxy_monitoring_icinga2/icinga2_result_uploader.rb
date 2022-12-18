@@ -74,7 +74,7 @@ module ::Proxy::Monitoring::Icinga2
     end
 
     def stop
-      @thread.terminate unless @thread.nil?
+      @thread&.terminate
     end
 
     private

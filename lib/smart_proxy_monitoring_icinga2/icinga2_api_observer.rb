@@ -48,7 +48,7 @@ module ::Proxy::Monitoring::Icinga2
       sleep 1
       retry
     ensure
-      ssl_socket.sysclose unless ssl_socket.nil?
+      ssl_socket&.sysclose
     end
 
     def do_start
@@ -58,7 +58,7 @@ module ::Proxy::Monitoring::Icinga2
     end
 
     def stop
-      @thread.terminate unless @thread.nil?
+      @thread&.terminate
     end
   end
 end
