@@ -14,6 +14,6 @@ group :test do
   gem 'rack-test'
   gem 'rake'
   gem 'smart_proxy', github: 'theforeman/smart-proxy', branch: 'develop'
-  gem 'test-unit'
+  gem 'test-unit', '~> 3'
   gem 'webmock'
 end
