@@ -127,7 +127,7 @@ class MonitoringIcinga2ProviderTest < Test::Unit::TestCase
 
   def test_remove_downtime_host
     icinga_result = '{"results":[{"code":200.0,"status":"Successfully removed all downtimes for object \'xyz.example.com\'."}]}'
-    stub_request(:post, "https://localhost:5665/v1/actions/remove-downtime").
+     stub_request(:post, "https://localhost:5665/v1/actions/remove-downtime").
       with(:body => '{"type":"Host","filter":"host.name==\"xyz.example.com\"","author":"Foreman","comment":"Downtime by Foreman"}').
       to_return(:status => 200, :body => icinga_result)
     @provider.remove_downtime_host('xyz.example.com', 'Foreman', 'Downtime by Foreman')
