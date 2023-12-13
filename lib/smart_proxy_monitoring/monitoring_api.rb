@@ -58,7 +58,7 @@ module Proxy::Monitoring
       comment = params[:comment] || 'triggered by foreman'
       start_time = params[:start_time] || Time.now.to_i
       end_time = params[:end_time] || (Time.now.to_i + (24 * 3600))
-      all_services = params[:all_services]
+      all_services = params[:all_services].to_s == 'true'
 
       log_provider_errors do
         validate_dns_name!(host)
