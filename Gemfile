@@ -8,7 +8,6 @@ group :rubocop do
 end
 
 group :test do
-  gem 'ci_reporter_test_unit'
   gem 'mocha'
   gem 'public_suffix'
   gem 'rack-test'
