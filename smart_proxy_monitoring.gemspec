@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = Proxy::Monitoring::VERSION
 
   s.summary = "Monitoring plug-in for Foreman's smart proxy"
-  s.description = "Monitoring plug-in for Foreman's smart proxy"
+  s.description = "For use together with the foreman_monitoring plugin."
   s.authors = ['Timo Goebel', 'Dirk Goetz']
   s.email = ['timo.goebel@dm.de', 'dirk.goetz@netways.de']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
